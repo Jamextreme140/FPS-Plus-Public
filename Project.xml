@@ -102,6 +102,7 @@
 	<haxelib name="flxanimate" />
 	<haxelib name="funkin.vis" />
 	<haxelib name="grig.audio" />
+	<haxelib name="hscript-improved" />
 	
 	<!--haxelib name="newgrounds"/-->
 	<!--haxelib name="faxe" if='switch'/-->
@@ -157,5 +158,6 @@
 
 	<!-- <haxedef name="SKIP_TO_PLAYSTATE" if="debug" /> -->
 	<!--haxedef name="NG_LOGIN" if="newgrounds" /-->
+	<haxedef name="hscriptPos" />
 	
 </project>

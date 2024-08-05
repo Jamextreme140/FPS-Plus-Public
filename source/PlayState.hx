@@ -1,5 +1,6 @@
 package;
 
+import scripting.HScript;
 import events.*;
 import note.*;
 import flixel.math.FlxAngle;
@@ -70,6 +71,8 @@ class PlayState extends MusicBeatState
 	public static var fceForLilBuddies:Bool = false;
 	
 	public static var returnLocation:String = "main";
+
+	public var scripts:Array<HScript> = new Array();
 	
 	private var canHit:Bool = false;
 	private var missTime:Float = 0;
@@ -717,7 +720,22 @@ class PlayState extends MusicBeatState
 		fromChartEditor = false;
 		fceForLilBuddies = false;
 
+		//Global script
+		for(file in sys.FileSystem.readDirectory('assets/data/${SONG.song.toLowerCase()}/')) {
+			trace(file);
+			if(file.endsWith('.hx')) {
+				var script:HScript = HScript.buildScript(Paths.file(haxe.io.Path.withoutExtension(file), 'data/${SONG.song.toLowerCase()}', 'hx'), this);
+				scripts.push(script);
+			}
+		}
+
+		set('SONG', SONG);
+		loadScripts();
+		call('onCreate');
+
 		super.create();
+
+		call('onPostCreate');
 	}
 
 	/*function updateAccuracyOld(){
@@ -1496,6 +1514,8 @@ class PlayState extends MusicBeatState
 		updateAccuracy();
 		updateScoreText();
 
+		call('onUpdate', [elapsed]);
+
 		super.update(elapsed);
 
 		stage.update(elapsed);
@@ -1669,6 +1689,8 @@ class PlayState extends MusicBeatState
 				releaseTimes[i] = -1;
 			}
 		}
+
+		call('onPostUpdate', [elapsed]);
 	}
 
 	public function openGameOver(?character:String):Void{
@@ -2476,6 +2498,8 @@ class PlayState extends MusicBeatState
 		stage.step(curStep);
 
 		super.stepHit();
+
+		call('onStepHit', [curStep]);
 	}
 
 	override function beatHit()
@@ -2527,6 +2551,7 @@ class PlayState extends MusicBeatState
 		gf.beat(curBeat);
 		stage.beat(curBeat);
 		
+		call('onBeatHit', [curBeat]);
 	}
 
 	public function executeEvent(tag:String):Void{
@@ -2541,6 +2566,7 @@ class PlayState extends MusicBeatState
 		}
 		else{
 			trace("No event found for: " + tag);
+			call('onEvent', [tag]);
 		}
 
 		return;
@@ -3069,6 +3095,21 @@ class PlayState extends MusicBeatState
 		}
 
 		super.switchState(_state);
+	}
+
+	function call(func:String, ?args:Array<Dynamic>) {
+		for(script in scripts)
+			script.call(func, args);
+	}
+
+	function set(varName:String, variable:Dynamic) {
+		for(script in scripts)
+			script.set(varName, variable);
+	}
+
+	function loadScripts() {
+		for(script in scripts)
+			script.load();
 	}
 
 }
