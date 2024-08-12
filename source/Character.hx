@@ -53,13 +53,15 @@ class Character extends FlxSpriteGroup
 	public var deathOffset:FlxPoint;
 	public var deathDelay:Float = 0.5;
 
+	public var worldPopupOffset:FlxPoint = new FlxPoint();
+
 	var character:FlxSprite;
 	var atlasCharacter:AtlasSprite;
 	public var characterInfo:CharacterInfoBase;
 
 	var curOffset = new FlxPoint();
 
-	var added:Bool = false;
+	//var added:Bool = false;
 
 	public var deathSound:String = "gameOver/fnf_loss_sfx";
 	public var deathSong:String = "gameOver/gameOver";
@@ -202,16 +204,16 @@ class Character extends FlxSpriteGroup
 				}
 			}
 
-			if(characterInfo.info.functions.add != null && !added){
+			/*if(characterInfo.info.functions.add != null && !added){
 				characterInfo.info.functions.add(this);
-			}
+			}*/
 
 			if(characterInfo.info.functions.update != null){
 				characterInfo.info.functions.update(this, elapsed);
 			}
 		}
 
-		added = true;
+		//added = true;
 
 		super.update(elapsed);
 
@@ -467,6 +469,8 @@ class Character extends FlxSpriteGroup
 						deathSong = data;
 					case "deathSongEnd":
 						deathSongEnd = data;
+					case "worldPopupOffset":
+						worldPopupOffset.set(data[0], data[1]);
 					default:
 						//Do nothing by default.
 				}

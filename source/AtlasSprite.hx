@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxTimer;
 import flxanimate.FlxAnimate;
 
 typedef AtlasAnimInfo = {
@@ -24,7 +25,8 @@ class AtlasSprite extends FlxAnimate
     private var baseWidth:Float = 0;
     private var baseHeight:Float = 0;
 
-    var loopNextFrame:Bool = false;
+    var loopTimer:Float = -1;
+    var loopTime:Float = -1;
 
     public function new(?_x:Float, ?_y:Float, _path:String) {
         super(_x, _y, _path);
@@ -148,7 +150,8 @@ class AtlasSprite extends FlxAnimate
 
         curAnim = name;
         finishedAnim = false;
-        loopNextFrame = false;
+        loopTimer = -1;
+        loopTime = -1;
 
         if(frameOffset >= animInfoMap.get(name).length){
             frameOffset = animInfoMap.get(name).length - 1;
@@ -159,26 +162,19 @@ class AtlasSprite extends FlxAnimate
     }
 
     function animCallback(name:String, frame:Int):Void{
-		var animInfo = animInfoMap.get(curAnim);
+		var animInfo:AtlasAnimInfo = animInfoMap.get(curAnim);
 
         if(frameCallback != null){ frameCallback(curAnim, frame - animInfo.startFrame, frame); }
 
-        if(loopNextFrame){
-            playAnim(curAnim, true, false, animInfo.loopFrame);
-        }
-
         if(frame >= (animInfo.startFrame + animInfo.length) - 1){
+            anim.pause();
+            finishedAnim = true;
+            if(animationEndCallback != null){ animationEndCallback(curAnim); }
 
             if(animInfo.looped){
-                loopNextFrame = true;
-                finishedAnim = true;
+                loopTimer = 0;
+                loopTime = 1/(animInfo.framerate);
             }
-            else{
-                anim.pause();
-                finishedAnim = true;
-            }
-
-            if(animationEndCallback != null){ animationEndCallback(curAnim); }
         }
 	}
 
@@ -199,6 +195,13 @@ class AtlasSprite extends FlxAnimate
 
         if(flipY){ offset.y = -height; }
         else { offset.y = 0; }
+
+        if(loopTimer >= 0){
+            loopTimer += elapsed;
+            if(loopTimer >= loopTime){
+                playAnim(curAnim, true, false, animInfoMap.get(curAnim).loopFrame);
+            }
+        }
 
         super.update(elapsed);
     }

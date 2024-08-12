@@ -25,14 +25,15 @@ class SchoolEvil extends BaseStage
 
 		// trailArea.scrollFactor.set();
 
-		var evilTrail = new DeltaTrail(dad().getSprite(), null, 10, 3 / 60, 0.4);
+		var evilTrail = new DeltaTrail(dad.getSprite(), null, 10, 3 / 60, 0.4);
 		//var evilTrail = new DeltaTrail(dad, null, 10, 24 / 60, 0.4, 0.005); //This is basically the default look of Spirit in base game.
 		addToMiddle(evilTrail);
 
 		dadStart.set(230, 924);
-		bfStart.set(1006.5, 925.5);
+		bfStart.set(960, 870);
 		gfStart.set(640, 801);
 
-		bfCameraOffset.set(32, -17);
+		bfCameraOffset.set(-48, 0);
+		gfCameraOffset.set(0, -16);
     }
 }

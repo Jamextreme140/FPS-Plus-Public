@@ -12,75 +12,69 @@ class School extends BaseStage
 
     public override function init(){
         name = "school";
-        uiType = "pixel";
+		uiType = "pixel";
 
-		// defaultCamZoom = 0.9;
+		var sky = new FlxSprite(-200, -24).loadGraphic(Paths.image("week6/weeb/sky"));
+		sky.scale.set(6, 6);
+		sky.updateHitbox();
+		sky.scrollFactor.set(0.1, 0.3);
+		addToBackground(sky);
 
-		var bgSky = new FlxSprite().loadGraphic(Paths.image('week6/weeb/weebSky'));
-		bgSky.scrollFactor.set(0.1, 0.1);
-		addToBackground(bgSky);
+		var farBackTrees = new FlxSprite(-200, 0).loadGraphic(Paths.image("week6/weeb/farBackTrees"));
+		farBackTrees.scale.set(6, 6);
+		farBackTrees.updateHitbox();
+		farBackTrees.scrollFactor.set(0.4, 0.8);
+		addToBackground(farBackTrees);
 
-		var repositionShit = -200;
+		var school = new FlxSprite(-200, 0).loadGraphic(Paths.image("week6/weeb/school"));
+		school.scale.set(6, 6);
+		school.updateHitbox();
+		school.scrollFactor.set(0.6, 0.9);
+		addToBackground(school);
 
-		var bgSchool:FlxSprite = new FlxSprite(repositionShit, 0).loadGraphic(Paths.image('week6/weeb/weebSchool'));
-		bgSchool.scrollFactor.set(0.6, 0.90);
-		addToBackground(bgSchool);
+		var ground = new FlxSprite(-200, 0).loadGraphic(Paths.image("week6/weeb/ground"));
+		ground.scale.set(6, 6);
+		ground.updateHitbox();
+		ground.scrollFactor.set(0.95, 0.95);
+		addToBackground(ground);
 
-		var bgStreet:FlxSprite = new FlxSprite(repositionShit).loadGraphic(Paths.image('week6/weeb/weebStreet'));
-		bgStreet.scrollFactor.set(0.95, 0.95);
-		addToBackground(bgStreet);
+		var backTrees = new FlxSprite(-200, 0).loadGraphic(Paths.image("week6/weeb/backTrees"));
+		backTrees.scale.set(6, 6);
+		backTrees.updateHitbox();
+		backTrees.scrollFactor.set(0.81, 0.95);
+		addToBackground(backTrees);
 
-		var fgTrees:FlxSprite = new FlxSprite(repositionShit + 170, 130).loadGraphic(Paths.image('week6/weeb/weebTreesBack'));
-		fgTrees.scrollFactor.set(0.9, 0.9);
+		var fgTrees = new FlxSprite(-818, -1098);
+		fgTrees.frames = Paths.getPackerAtlas("week6/weeb/weebTrees");
+		fgTrees.scale.set(6, 6);
+		fgTrees.updateHitbox();
+		fgTrees.scrollFactor.set(0.88, 0.95);
+		fgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
+		fgTrees.animation.play('treeLoop');
 		addToBackground(fgTrees);
 
-		var bgTrees:FlxSprite = new FlxSprite(repositionShit - 380, -800);
-		var treetex = Paths.getPackerAtlas("week6/weeb/weebTrees");
-		bgTrees.frames = treetex;
-		bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
-		bgTrees.animation.play('treeLoop');
-		bgTrees.scrollFactor.set(0.85, 0.85);
-		addToBackground(bgTrees);
-
-		var treeLeaves:FlxSprite = new FlxSprite(repositionShit, -40);
-		treeLeaves.frames = Paths.getSparrowAtlas("week6/weeb/petals");
-		treeLeaves.animation.addByPrefix('leaves', 'PETALS ALL', 24, true);
-		treeLeaves.animation.play('leaves');
-		treeLeaves.scrollFactor.set(0.85, 0.85);
-		addToBackground(treeLeaves);
-
-		var widShit = Std.int(bgSky.width * 6);
-
-		bgSky.setGraphicSize(widShit);
-		bgSchool.setGraphicSize(widShit);
-			bgStreet.setGraphicSize(widShit);
-		bgTrees.setGraphicSize(Std.int(widShit * 1.4));
-		fgTrees.setGraphicSize(Std.int(widShit * 0.8));
-		treeLeaves.setGraphicSize(widShit);
-
-		fgTrees.updateHitbox();
-		bgSky.updateHitbox();
-		bgSchool.updateHitbox();
-		bgStreet.updateHitbox();
-		bgTrees.updateHitbox();
-		treeLeaves.updateHitbox();
-
-		bgGirls = new BackgroundGirls(-100, 190);
-		bgGirls.scrollFactor.set(0.9, 0.9);
-
-		if (PlayState.SONG.player2 == "SenpaiAngry"){
-			bgGirls.getScared();
-		}
-
-		bgGirls.setGraphicSize(Std.int(bgGirls.width * PlayState.daPixelZoom));
+		bgGirls = new BackgroundGirls(-100, 180);
+		bgGirls.scrollFactor.set(0.95, 0.95);
+		if (PlayState.SONG.player2 == "SenpaiAngry"){ bgGirls.getScared(); }
+		bgGirls.scale.set(6, 6);
 		bgGirls.updateHitbox();
 		addToBackground(bgGirls);
 
+		var leaves = new FlxSprite(-200, 0);
+		leaves.frames = Paths.getSparrowAtlas("week6/weeb/petals");
+		leaves.scale.set(6, 6);
+		leaves.updateHitbox();
+		leaves.scrollFactor.set(1, 1);
+		leaves.animation.addByPrefix('leaves', 'PETALS ALL', 24, true);
+		leaves.animation.play('leaves');
+		addToBackground(leaves);
+
 		dadStart.set(312.5, 932);
-		bfStart.set(1006.5, 925.5);
+		bfStart.set(960, 870);
 		gfStart.set(640, 801);
 
-		bfCameraOffset.set(32, 8);
+		bfCameraOffset.set(-48, 0);
+		dadCameraOffset.set(12, 0);
     }
 
 	public override function beat(curBeat:Int){

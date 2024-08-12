@@ -21,7 +21,7 @@ class Spooky extends BaseStage
     public override function init(){
         name = "spooky";
 
-		halloweenBG = new FlxSprite(-200, -100);
+		halloweenBG = new FlxSprite(-191, -100);
 		halloweenBG.frames = Paths.getSparrowAtlas("week2/halloween_bg");
 		halloweenBG.animation.addByPrefix('idle', 'halloweem bg0');
 		halloweenBG.animation.addByPrefix('lightning', 'halloweem bg lightning strike', 24, false);
@@ -63,7 +63,7 @@ class Spooky extends BaseStage
 		lightningStrikeBeat = curBeat;
 		lightningOffset = FlxG.random.int(8, 24);
 
-		boyfriend().playAnim('scared', true);
-		gf().playAnim('scared', true);
+		boyfriend.playAnim('scared', true);
+		gf.playAnim('scared', true);
 	}
 }
